@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn" monitorInterval="30">
+    <Properties>
+        <Property name="log-path">../log</Property>
+    </Properties>
+    <Appenders>
+        <!-- console appender -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{DATE} -- %msg%n"/>
+        </Console>
+        <!-- file appender -->
+        <RollingFile name="TrafficLogger" fileName="${log-path}/traffic.log"
+                     filePattern="${log-path}/traffic-%d{yyyy-MM-dd}-%i.gz">
+            <PatternLayout>
+                <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss} [%C{1}:%L] - %msg%n</pattern>
+            </PatternLayout>
+            <!-- set file size policy -->
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="100" />
+        </RollingFile>
+        <RollingFile name="ApplicationLogger" fileName="${log-path}/app.log"
+                     filePattern="${log-path}/app-%d{yyyy-MM-dd}-%i.gz">
+            <PatternLayout>
+                <pattern>[%-5level] %d{yyyy-MM-dd HH:mm:ss} Thread:%t [%C{1}:%L] - %msg%n</pattern>
+            </PatternLayout>
+            <!-- set file size policy -->
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="10 MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="100" />
+        </RollingFile>
+    </Appenders>
+    <Loggers>
+        <Logger name="TrafficLogger" level="info" additivity="false" includeLocation="true">
+            <appender-ref ref="TrafficLogger" level="info"/>
+        </Logger>
+        <Logger name="ApplicationLogger" level="info" additivity="false" includeLocation="true">
+            <appender-ref ref="ApplicationLogger" level="info"/>
+        </Logger>
+        <Logger name="com.familyzone.safeinspect.client.SafeInspectClient" level="info" additivity="false" includeLocation="true">
+            <appender-ref ref="ApplicationLogger" level="info"/>
+        </Logger>
+        <Root level="info" additivity="false" includeLocation="true">
+            <appender-ref ref="Console" level="info"/>
+        </Root>
+    </Loggers>
+</Configuration>
