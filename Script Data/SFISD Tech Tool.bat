@@ -1,6 +1,7 @@
 @echo off
 title SFISD Tech Tool
-:start
+rem Term Agreement -----------------------------------------------------------
+:agreement
 color 02
 echo Santa Fe Independent School District Technology
 echo.   
@@ -23,10 +24,10 @@ echo              ......................
 echo.
 echo This script was intended for sysadmin use only.
 set /p user_input=Would you like to continue (y/n)?:~$
-if not defined user_input goto start
-if /i %user_input%==y goto selection
+if not defined user_input goto agreement
+if /i %user_input%==Y goto selection
 if /i %user_input%==Ver goto version
-if /i %user_input%==n (goto no) else (goto invalid)
+if /i %user_input%==N (goto no) else (goto invalid)
 
 :no
 echo user has selected No
@@ -39,51 +40,46 @@ echo %user_input% is an invalid entry, try again.
 set user_input=""
 pause
 cls
-goto start
+goto agreement
 
-------------------------------------------------------------------------------
-Version
-
+rem Version Info -------------------------------------------------------------
 :version
 cls
 color 0f
-echo Script Build: v1.1
+echo Script Build: v2.0
 echo OS Build: Windows 11
 echo Created By: Dylan Piecznski
 echo.
 echo Please note any issues you encounter
 pause
 cls
-goto start
+goto agreement
 
-------------------------------------------------------------------------------
-Selection
-
+rem Main Selection -----------------------------------------------------------
 :selection
 cls
 color 0f
 echo Please Type One of The Following Selections - 
-echo  Firmware, Intunes, SCCM, Store
+echo  Connect, Firmware, Intune, Installs, SCCM
 set /p user_input=:~$
-if not defined user_input goto start
-if /i %user_input%==firmware goto firmware
-if /i %user_input%==store goto msstore
-if /i %user_input%==intunes goto intunes
-if /i %user_input%==sccm goto sccm
-if /i %user_input%==exit (goto end) else (goto invalid)
+if not defined user_input goto agreement
+if /i %user_input%==Firmware goto firmware
+if /i %user_input%==Installs goto msstore
+if /i %user_input%==Intune goto intune
+if /i %user_input%==SCCM goto sccm
+if /i %user_input%==Connect goto connect
+if /i %user_input%==Exit (goto end) else (goto invalid)
 
-------------------------------------------------------------------------------
-Dell Firmware
-
+rem Dell Firmware ------------------------------------------------------------
 :firmware
 cls
 color 03
 echo Welcome to the firmware update center!
-echo (Last Updated 06/13/2024)
+echo (Last Updated 08/21/2024)
 echo.
 echo Installer is for Dell Latitudes only!!
 set /p user_input=Input laptop model number:~$
-if not defined user_input goto start
+if not defined user_input goto agreement
 if /i %user_input%==Back goto selection
 if /i %user_input%==3120 goto firmware3120
 if /i %user_input%==3140 goto firmware3140
@@ -105,6 +101,7 @@ echo Dell Latitude 3310
 echo Dell Latitude 3390
 echo Dell Latitude 3410
 echo Support
+echo Supportassist
 echo.
 pause
 goto firmware
@@ -118,7 +115,7 @@ Start "" "D:\Script Data\Firmware\Latitude_3140_1.15.0.exe"
 goto end
 
 :firmware3190
-Start "" "D:\Script Data\Firmware\Latitude_3190_1.34.0.exe"
+Start "" "D:\Script Data\Firmware\Latitude_3190_1.35.0.exe"
 goto end
 
 :firmware3310
@@ -126,7 +123,7 @@ Start "" "D:\Script Data\Firmware\Latitude_3310_2in1_1.24.0.exe"
 goto end
 
 :firmware3390
-Start "" "D:\Script Data\Firmware\Latitude_3390_1.31.0.exe"
+Start "" "D:\Script Data\Firmware\Latitude_3390_1.32.0.exe"
 goto end
 
 :firmware3410
@@ -141,20 +138,19 @@ goto firmware
 Start "" "D:\Script Data\Installers\SupportAssistInstaller.exe"
 goto end
 
-------------------------------------------------------------------------------
-Online Installs
-
+rem Online Installs ----------------------------------------------------------
 :msstore
 cls
 color 0f
 echo Microsoft Store -
-echo Ipevo, Minecraft, Office365, Outlook, PCManager, PowerToys,
-echo  QuickAssist, Surface, Unifying, VLC, WhiteBoard, Exit
+echo CompanyPortal, Ipevo, Minecraft, Office365, Outlook, PCManager,
+echo  PowerToys, QuickAssist, RmCortana, Surface, Unifying, VLC, WhiteBoard, Exit
 echo.
 set /p user_input=Type an option from the list:~$
 if not defined user_input goto msstore
 if /i %user_input%==Back goto selection
 if /i %user_input%==Update goto msupdate
+if /i %user_input%==CompanyPortal goto mscp
 if /i %user_input%==Minecraft goto minecraftedu
 if /i %user_input%==WhiteBoard goto mswhiteboard
 if /i %user_input%==Ipevo goto ipevo
@@ -166,7 +162,8 @@ if /i %user_input%==Unifying goto unifying
 if /i %user_input%==PowerToys goto powertoys
 if /i %user_input%==PCManager goto pcmanager
 if /i %user_input%==Outlook goto outlook
-if /i %user_input%==exit (goto end) else (goto msstoreinvalid)
+if /i %user_input%==RmCortana goto rmcortana
+if /i %user_input%==Exit (goto end) else (goto msstoreinvalid)
 
 :msstoreinvalid
 color 04
@@ -179,6 +176,11 @@ goto msstore
 winget upgrade -h --all
 echo Task Completed.
 pause
+goto msstore
+
+:mscp
+winget install 9WZDNCRFJ3PZ
+echo Task Completed.
 goto msstore
 
 :minecraftedu
@@ -247,19 +249,54 @@ echo Task Completed
 pause
 goto msstore
 
-------------------------------------------------------------------------------
-Intunes Commands
+:rmcortana
+winget uninstall cortana
+echo Task Completed.
+pause
+goto msstore
 
-:intunes
+rem Family Zone Connect ------------------------------------------------------
+:connect
 cls
 color 0f
-echo Intunes is Selected.
+echo Family Zone Connect+ Client
+set /p user_input=Do you need to repair Connect (y/n)?:~$
+if not defined user_input goto connect
+if /i %user_input%==Back goto selection
+if /i %user_input%==Y goto connectyes
+if /i %user_input%==N goto connectno
+if /i %user_input%==Exit (goto end) else (goto connectinvalid)
+
+:connectinvalid
+color 04
+echo %user_input% is an invalid entry, try again.
+set user_input=""
+pause
+goto Connect
+
+:connectyes
+echo Complete the uninstall before continuing.
+Start "" "D:\Script Data\Connect\uninstall.exe"
+pause
+goto connectno
+
+:connectno
+Start "" "D:\Script Data\Connect\Connect+Installer 4.0.1.msi"
+echo Task Completed.
+pause
+goto selection
+
+rem Intune Commands ----------------------------------------------------------
+:intune
+cls
+color 0f
+echo Intune is Selected.
 echo.
-echo List: TimeSync, SystemClean, NetReset, WinRepair, DelProfiles, Connect,
+echo List: TimeSync, SystemClean, NetReset, WinRepair, DelProfiles,
 echo TXSecure, VEXCode, 3410Audio, Exit
 echo.
 set /p user_input=Type an option from the list:~$
-if not defined user_input goto intunes
+if not defined user_input goto intune
 if /i %user_input%==Back goto selection
 if /i %user_input%==TimeSync goto intunestime
 if /i %user_input%==SystemClean goto intunessysclean
@@ -270,14 +307,14 @@ if /i %user_input%==Connect goto intunesconnect
 if /i %user_input%==TXSecure goto intunestxsecure
 if /i %user_input%==VEXCode goto intunesvexcode
 if /i %user_input%==3410Audio goto intunes3410audio
-if /i %user_input%==Exit (goto end) else (goto intunesinvalid)
+if /i %user_input%==Exit (goto end) else (goto intuneinvalid)
 
-:intunesinvalid
+:intuneinvalid
 color 04
 echo %user_input% is an invalid entry, try again.
 set user_input=""
 pause
-goto intunes
+goto intune
 
 :intunestime
 net start w32time
@@ -285,7 +322,7 @@ timeout /t 10
 w32tm /resync
 echo Task Completed.
 pause
-goto intunes
+goto intune
 
 :intunessysclean
 winget uninstall cortana
@@ -299,7 +336,7 @@ taskkill /F /IM explorer.exe & start explorer
 timeout /t 3
 echo Task Completed.
 pause
-goto intunes
+goto intune
 
 :intunesnet
 netsh winsock reset
@@ -310,7 +347,7 @@ ipconfig /flushdns
 start www.msftconnecttest.com/redirect
 echo Task Completed.
 pause
-goto intunes
+goto intune
 
 :intuneswinrepair
 chkdsk /f
@@ -319,50 +356,40 @@ sfc /scannow
 UsoClient ScanInstallWait
 echo Task Completed.
 pause
-goto intunes
+goto intune
 
 :intunesprofile
 start SystemPropertiesAdvanced
-goto intunes
-
-:intunesconnect
-echo Complete the uninstall before continuing.
-Start "" "D:\Script Data\FamilyZone\MobileZoneAgent\uninstall.exe"
-pause
-Start "" "D:\Script Data\Installers\Connect+Installer 4.0.1.msi"
-echo Task Completed.
-goto intunes
+goto intune
 
 :intunestxsecure
 Start "" "D:\Script Data\Installers\TXSecureBrowser16.0-64bit.msi"
 echo Task Completed.
 pause
-goto intunes
+goto intune
 
 :intunesvexcode
-Start "" "D:\Script Data\Installers\VEXcodeIQ-20231108.msi"
+Start "" "D:\Script Data\Installers\VEXcode IQ-4.0.1-latest-win-x64.exe" /S /allusers
 pause
-Start "" "D:\Script Data\Installers\VEXcodeV5-20240528.msi"
+Start "" "D:\Script Data\Installers\VEXcode V5-4.0.1-latest-win-x64.exe" /S /allusers
 echo Task Completed.
 pause
-goto intunes
+goto intune
 
 :intunes3410audio
 Start "" "D:\Script Data\Installers\Realtek-High-Definition-Audio-Driver_PPWMJ_WIN_6.0.9517.1_A83.EXE"
 echo Task Completed.
 pause
-goto intunes
+goto intune
 
-------------------------------------------------------------------------------
-SCCM Commands
-
+rem SCCM Commands ------------------------------------------------------------
 :sccm
 cls
 color 0f
 echo SCCM is Selected.
 echo.
-echo List: TimeSync, SystemClean, NetReset, WinRepair, DelProfiles, Connect,
-echo TXSecure, UninCortana, MSTeams, Office365, AutoLogON, Verbo, Exit
+echo List: TimeSync, SystemClean, NetReset, WinRepair, DelProfiles, 
+echo TXSecure, MSTeams, AutoLogON, Verbo, Exit
 echo.
 set /p user_input=Type an option from the list:~$
 if not defined user_input goto sccm
@@ -372,11 +399,8 @@ if /i %user_input%==SystemClean goto sccmsysclean
 if /i %user_input%==NetReset goto sccmnet
 if /i %user_input%==WinRepair goto sccmwinrepair
 if /i %user_input%==DelProfiles goto sccmprofile
-if /i %user_input%==Connect goto sccmconnect
 if /i %user_input%==TXSecure goto sccmtxsecure
-if /i %user_input%==UninCortana goto sccmcortana
 if /i %user_input%==MSTeams goto sccmteams
-if /i %user_input%==Office365 goto sccmoffice365
 if /i %user_input%==AutoLogON goto sccmautolog
 if /i %user_input%==Verbo goto sccmverbo
 if /i %user_input%==Exit (goto end) else (goto sccminvalid)
@@ -433,23 +457,8 @@ goto sccm
 start SystemPropertiesAdvanced
 goto sccm
 
-:sccmconnect
-echo Complete the uninstall before continuing.
-Start "" "D:\Script Data\FamilyZone\MobileZoneAgent\uninstall.exe"
-pause
-Start "" "D:\Script Data\Installers\Connect+Installer 4.0.1.msi"
-echo Task Completed.
-pause
-goto sccm
-
 :sccmtxsecure
 Start "" "D:\Script Data\Installers\TXSecureBrowser16.0-64bit.msi"
-echo Task Completed.
-pause
-goto sccm
-
-:sccmcortana
-winget uninstall cortana
 echo Task Completed.
 pause
 goto sccm
@@ -460,14 +469,8 @@ echo Task Completed.
 pause
 goto sccm
 
-:sccmoffice365
-Start "" "D:\Script Data\Installers\OfficeSetup.exe"
-echo Task Completed.
-pause
-goto sccm
-
 :sccmautolog
-Start D:\Script Data\Installers\Autologon.exe /accepteula student santafe sfstu
+Start "" "D:\Script Data\Installers\Autologon.exe" /accepteula student santafe sfstu
 echo Task Completed.
 pause
 goto sccm
@@ -478,7 +481,6 @@ echo Task Completed.
 pause
 goto sccm
 
-------------------------------------------------------------------------------
-
+rem End ----------------------------------------------------------------------
 :end           
 exit
