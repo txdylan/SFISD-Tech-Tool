@@ -27,6 +27,7 @@ set /p user_input=Would you like to continue (y/n)?:~$
 if not defined user_input goto agreement
 if /i %user_input%==Y goto selection
 if /i %user_input%==Ver goto version
+if /i %user_input%==readme goto readme
 if /i %user_input%==N (goto no) else (goto invalid)
 
 :no
@@ -46,11 +47,29 @@ rem Version Info -------------------------------------------------------------
 :version
 cls
 color 0f
-echo Script Build: v2.0
-echo OS Build: Windows 11
-echo Created By: Dylan Piecznski
+echo OS Build: 
+echo - Minimum: Windows 10 22H2  
+echo - Recommended: Windows 11 23H2 or later
 echo.
-echo Please note any issues you encounter
+echo Build Version: v2.0.1
+echo Created By: TXDYLAN
+echo.
+echo Please reference README.txt for any issues you encounter.
+echo For further assistance or questions, please contact TXDYLAN at affiliates@txdylan.com
+set /p user_input=Would you like more information (y/n)?:~$
+if /i %user_input%==Y goto readme
+if /i %user_input%==N (goto verno) else (goto invalid)
+:verno
+cls
+goto agreement
+
+rem README -------------------------------------------------------------------
+:readme
+cls
+D:
+cd Script Data
+type README.txt
+echo.
 pause
 cls
 goto agreement
@@ -60,11 +79,11 @@ rem Main Selection -----------------------------------------------------------
 cls
 color 0f
 echo Please Type One of The Following Selections - 
-echo  Connect, Firmware, Intune, Installs, SCCM
+echo  Connect, Firmware, Intune, Install, SCCM
 set /p user_input=:~$
 if not defined user_input goto agreement
 if /i %user_input%==Firmware goto firmware
-if /i %user_input%==Installs goto msstore
+if /i %user_input%==Install goto msstore
 if /i %user_input%==Intune goto intune
 if /i %user_input%==SCCM goto sccm
 if /i %user_input%==Connect goto connect
@@ -143,8 +162,8 @@ rem Online Installs ----------------------------------------------------------
 cls
 color 0f
 echo Microsoft Store -
-echo CompanyPortal, Ipevo, Minecraft, Office365, Outlook, PCManager,
-echo  PowerToys, QuickAssist, RmCortana, Surface, Unifying, VLC, WhiteBoard, Exit
+echo CompanyPortal, Ipevo, Minecraft, Office365, Outlook, PCManager, PowerToys 
+echo  QuickAssist, RmCortana, Surface, Unifying, Update, VLC, WhiteBoard, Exit
 echo.
 set /p user_input=Type an option from the list:~$
 if not defined user_input goto msstore
