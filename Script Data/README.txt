@@ -4,39 +4,37 @@ This batch file includes a collection of tools designed to help manage computers
 
 ## Contents
 
-- **Tool 1: [Connect]**
-  - **Description:** Will assist you in repairing or installing "Family Zone Cyber Safety Ltd."
-  - **Usage:** "Do you need to repair Connect (y/n?:~$" You will type "y" or "n" depending on your needs. 
-If "y" it will try and uninstall any current versions of Connect before installing the current version.
-  
-- **Tool 2: [Firmware]**
-  - **Description:** Will help you update to the latest Dell Firmware. (DELL LATITUDE'S ONLY!!)
-  - **Usage:** Tool will prompt you for a model number. Type only the model number and it will launch your firmware.
-You can also type "ls" to get a list of supported models in this tool. 
+- **Tool 1: [Command]**
+  - **Description:** Will give you a list of options to help repair your Windows device.
+  - **Usage:** Press the desired command number into the prompt.
 
-- **Tool 3: [Intune]**
-  - **Description:** Will give you a list of options to help repair a Intune's deployed device.
-  - **Usage:** Type the desired command into the prompt.
+- **Tool 2: [Connect]**
+  - **Description:** Will assist you in repairing or installing "Family Zone Cyber Safety Ltd."
+  - **Usage:** "Do you need to repair Connect (y/n?:~$" You will press `Y` or `N` depending on your needs. 
+If `Y` it will try and uninstall any current versions of Connect before installing the current version.
+  
+- **Tool 3: [Firmware]**
+  - **Description:** Will help you update to the latest Dell Firmware. **(DELL LATITUDE'S ONLY!!)**
+  - **Usage:** Tool will prompt you for a number, press the number that represents your model number and it will launch your firmware.
 
 - **Tool 4: [Install]**
-  - **Description:** Will help you install any software it lists, directly from the web without having to look for installers.
-  - **Usage:** Type the software you desire from the list above into the prompt to install it.
-Use "update" to automatically update all existing software on your computer.
+  - **Description:** Will help you install any software it lists directly from the web without having to look for an installer.
+  - **Usage:** Press the number that correlates to your desired software from the list above into the prompt to install it.
+Use `U` to automatically update all existing software on your computer.
 
-- **Tool 5: [SCCM]**
-  - **Description:** Will give you a list of options to help repair a Microsoft System Center Configuration Manager deployed device.
-  - **Usage:** Type the desired command into the prompt.
+- **Tool 5: [Offline]**
+  - **Description:** Will give you a list of options to install, using offline installers.
+  - **Usage:** Press the number that correlates to your desired software.
 
 - **Commands:
-  - ** Use "ver" on the first welcome screen to see the version and tool information.
-  - ** Use "back" on any tool to go back a step.
-  - ** Use "exit" to leave the application at anytime.
+  - ** Use `ver` on the first welcome screen to see the version and tool information.
+  - ** Use `0` on any tool to go a step back and/or to leave the application at anytime.
 
 ## Prerequisites
 
 - **Operating System:**  
   - **Minimum:** Windows 10 22H2  
-  - **Recommended:** Windows 11 23H2 or later
+  - **Recommended:** Windows 11 22H2 or later
 - **Permissions:** Ensure you have administrator privileges to run these tools.
 - **Dependencies:**  
   The following dependencies must be installed for the batch file to function correctly:
